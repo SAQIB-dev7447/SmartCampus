@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campus Portal Login | Smart Resolution Platform</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center transition-colors duration-300">
+<div class="fixed top-0 left-0 w-full h-1 bg-primary"></div>
+<main class="w-full max-w-md px-6 py-12">
+<div class="text-center mb-8">
+<div class="inline-flex items-center justify-center w-20 h-20 bg-primary/10 dark:bg-primary/20 rounded-xl mb-4">
+<img alt="University Logo" class="w-12 h-12" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2y_utT6p65nzJBIj6yA3sLJGKU4uNxbGPvI8xJVdKOSRnDtuM12N9yd8w9WYlYBMdvDSPevJHG12jhJKvNjD7mawgOdDil9A1umjf2dbNKEISeYsspKcZQ8XxYoEFDgANQF_lu_qFTE_XGSi49AFe7Vv6O24P2wG-6PHunrjpl_kzEL6omjF7M3SKLsINenT_ORhuYCYFtqSAy2Z9xe3M_D_5GdBI9hHzsmetODloWnrB-t89ITZRG6Kq6mBEzwUYZH7__5kJMrG5"/>
+</div>
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Campus Portal</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-2">Smart Issue Reporting &amp; Resolution</p>
+</div>
+<div class="bg-white dark:bg-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-xl border border-slate-200 dark:border-slate-700 p-8">
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="mb-4 px-4 py-3 rounded-lg text-sm font-medium
+    {% if category == 'error' %}bg-red-100 text-red-700 border border-red-200
+    {% elif category == 'success' %}bg-green-100 text-green-700 border border-green-200
+    {% else %}bg-blue-100 text-blue-700 border border-blue-200{% endif %}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<form action="{{ url_for('auth.login') }}" class="space-y-6" method="POST">
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" for="role">I am a...</label>
+<div class="relative">
+<select class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-primary focus:border-primary py-3 pl-4 pr-10 appearance-none" id="role" name="role">
+<option value="student">Student</option>
+<option value="staff">University Staff</option>
+<option value="admin">Administrator</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+<span class="material-icons text-sm">expand_more</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" for="email">Email Address</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+<span class="material-icons text-slate-400 text-[20px]">mail_outline</span>
+</div>
+<input class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-primary focus:border-primary py-3 pl-11" id="email" name="email" placeholder="name@university.edu" required="" type="email"/>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300" for="password">Password</label>
+<a class="text-xs font-semibold text-primary hover:underline" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+<span class="material-icons text-slate-400 text-[20px]">lock_open</span>
+</div>
+<input class="block w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-primary focus:border-primary py-3 pl-11" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600" type="button">
+<span class="material-icons text-[20px]">visibility_off</span>
+</button>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3.5 rounded-lg transition-all transform active:scale-[0.98] shadow-lg shadow-primary/20" type="submit">
+                Sign In to Portal
+            </button>
+</form>
+<div class="mt-8">
+<div class="relative">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+</div>
+<div class="relative flex justify-center text-sm">
+<span class="px-2 bg-white dark:bg-slate-800 text-slate-500">Or continue with</span>
+</div>
+</div>
+<div class="mt-6 flex gap-4">
+<button class="flex-1 flex items-center justify-center px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<img alt="Google Logo" class="w-5 h-5 mr-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL5s8tr7L-co3Vwt8r78T3388PdFQToF_5gmtT_MDUBMvQWejMx0BTDvHHe601fMBliZ8CfwxVKRDqI7e7fLeFQjye82crdEhHwBvvVpXK-QKRygz4HDVI0vHw2M4RDuAKzynN7TBNxlDn7qBRIKi2pMQ_r7XwyN5fgjlHe21SwHQ4tpf6n77RaGW9Iu4ZrtA2rfAqIQ0wAQ5Wt9M6M53MToVPPDlivEGKvwBlrbK6sfgYeodk8xQJIDEN8IeppsWszFe_H1kmnhzJ"/>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Google</span>
+</button>
+<button class="flex-1 flex items-center justify-center px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+<img alt="Microsoft Logo" class="w-5 h-5 mr-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV9SphDUYeLbERkoj_AOblzER1FAZ4j_x0E778CkxmcoVy1x45ohJWC34vRz1HqMEajeGj24HJ4e1qkEwG-ObjqxUwBu2raYkqROv2N3ynGJ1ZVrxmm92PG89xSiPFwWIe1FUcS9r4B3sRkqQRm1-dNNk2SQMbPO7V5-tgJoAE8FR7pvCKJ9hZp4AbR3Krof5uITFBou94Fu5QZVZE6m26NwiSbZLJPsTR3cn4FsrihYIsIXPoncFbwXaMpwBfQIvNeS77CtnAAUhz"/>
+<span class="text-sm font-medium text-slate-600 dark:text-slate-300">Microsoft</span>
+</button>
+</div>
+</div>
+</div>
+<p class="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
+        Don't have an account? 
+        <a class="font-bold text-primary hover:underline ml-1 transition-all" href="{{ url_for('auth.signup') }}">Sign Up</a>
+</p>
+<footer class="mt-12 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-slate-400 dark:text-slate-500 uppercase tracking-widest font-medium">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="hover:text-primary transition-colors" href="#">System Status</a>
+</footer>
+</main>
+<div class="fixed bottom-6 right-6">
+<button class="p-3 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-all" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-icons">dark_mode</span>
+</button>
+</div>
+
+</body></html>

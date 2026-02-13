@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Notifications | Smart Campus</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 font-sans text-slate-800 dark:text-slate-200 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Notifications</h1>
+            <div class="flex gap-4">
+                <a href="{{ url_for('common.clear_all') }}" class="text-sm text-blue-600 hover:text-blue-800">Mark all
+                    as read</a>
+                <a href="{{ url_for('admin.dashboard' if session.role == 'admin' else 'student.dashboard') }}"
+                    class="text-sm text-slate-500 hover:text-slate-700">Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-lg shadow overflow-hidden">
+            {% if notifications %}
+            <ul class="divide-y divide-slate-100 dark:divide-slate-700">
+                {% for notif in notifications %}
+                <li
+                    class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors {{ 'bg-blue-50/50 dark:bg-blue-900/10' if not notif.is_read else '' }}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex gap-3">
+                            <div class="mt-1">
+                                <span
+                                    class="material-icons text-sm {{ 'text-blue-500' if not notif.is_read else 'text-slate-400' }}">
+                                    {{ 'mark_email_unread' if not notif.is_read else 'check_circle' }}
+                                </span>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-sm font-medium {{ 'text-slate-900 dark:text-white' if not notif.is_read else 'text-slate-500 dark:text-slate-400' }}">
+                                    {{ notif.message }}
+                                </p>
+                                <p class="text-xs text-slate-400 mt-1">{{ notif.created_at|to_ist|timesince }}</p>
+                            </div>
+                        </div>
+                        {% if notif.issue_id %}
+                        <a href="{{ url_for('common.mark_read', notification_id=notif.id) }}"
+                            class="text-xs bg-white border border-slate-200 rounded px-2 py-1 text-slate-600 hover:text-blue-600 hover:border-blue-600 transition-colors">
+                            View Issue
+                        </a>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="p-12 text-center text-slate-500">
+                <span class="material-icons text-4xl mb-2 block text-slate-300">notifications_off</span>
+                No notifications yet.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>
